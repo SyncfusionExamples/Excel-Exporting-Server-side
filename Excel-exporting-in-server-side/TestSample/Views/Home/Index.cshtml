@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Grid";
+}
+
+
+<div>
+    <ejs-grid id="Grid" dataSource="@ViewBag.dataSource" toolbarClick="toolbarClick" allowPaging="true" toolbar="@(new List<string>() { "ExcelExport"})" allowExcelExport="true">
+        <e-grid-columns>
+            <e-grid-column field="OrderID" headerText="Order ID" isPrimaryKey="true" validationRules="@(new { required=true})" textAlign="Right" width="120"></e-grid-column>
+            <e-grid-column field="CustomerID" headerText="Customer Name" validationRules="@(new { required=true})" width="150"></e-grid-column>
+            <e-grid-column field="Freight" headerText="Freight" format="C2" width="120"></e-grid-column>
+            <e-grid-column field="ShipCity" headerText="Ship City" minWidth="20" maxWidth="500"></e-grid-column>
+        </e-grid-columns>
+    </ejs-grid>
+</div>
+
+<form action="/Home/ExcelExport" method="post">
+    <input type="hidden" name="GridModel" id="hdnexcelexport" />
+</form>
+
+<script>
+    function toolbarClick(args) {
+        var columns = JSON.stringify({ columns: this.columns });
+        document.getElementById("hdnexcelexport").value = columns;
+        var form = document.getElementsByTagName("form")[0];
+        form.submit();
+        args.cancel = true;
+    } 
+</script>
